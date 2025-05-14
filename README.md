@@ -1,97 +1,149 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+Here’s the updated version of your **README** to include the transcription feature with a loading state:
 
-# Getting Started
+---
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+# Voice Note App
 
-## Step 1: Start Metro
+A simple React Native app that allows users to record, play, pause, stop, skip forward/backward, and delete voice notes. The app also supports displaying timestamps for each note, adding a "NEW" badge for voice notes recorded in the last 60 seconds, and transcribing the audio to text.
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Features
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- **Recording**: Start and stop audio recordings with a timestamp.
+- **Playback**: Play, pause, stop, and skip forward/backward through the recording.
+- **Progress**: See real-time progress of audio playback with a visual progress bar.
+- **"NEW" Badge**: Automatically shows a "NEW" badge for voice notes recorded in the last 60 seconds.
+- **Delete**: Option to delete voice notes.
+- **Transcription**: Transcribe voice notes into text using speech-to-text functionality.
+- **Permissions**: Requests the necessary permissions for recording audio and reading/writing to storage on Android.
 
-```sh
-# Using npm
-npm start
+## Tech Stack
 
-# OR using Yarn
-yarn start
+- **React Native**: Framework for building the mobile app.
+- **AudioRecorderPlayer**: Library for recording and playing audio.
+- **AsyncStorage**: Stores voice notes locally on the device.
+- **RNFS (React Native FS)**: For file system management and handling audio file paths.
+
+## Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/charlesrelleta/voice-note-app.git
+   ```
+
+2. **Install dependencies:**
+
+   Navigate into the project directory and install the required packages:
+
+   ```bash
+   cd voice-note-app
+   yarn install
+   ```
+
+   Or if you're using npm:
+
+   ```bash
+   npm install
+   ```
+
+3. **Install Android and iOS dependencies:**
+
+   If you haven't already, install the necessary dependencies for Android and iOS:
+
+   ```bash
+   cd ios && pod install && cd ..
+   ```
+
+4. **Run the app:**
+
+   To run the app on a simulator/emulator or a physical device, use the following commands:
+
+   For iOS:
+
+   ```bash
+   yarn ios
+   ```
+
+   Or for Android:
+
+   ```bash
+   yarn android
+   ```
+
+## Permissions
+
+The app requires the following permissions:
+
+- **Android**:
+
+  - RECORD_AUDIO
+  - WRITE_EXTERNAL_STORAGE
+  - READ_EXTERNAL_STORAGE
+
+  These permissions are requested when the app is first opened. Ensure that the user grants the permissions for the app to function correctly.
+
+## App Flow
+
+1. **Recording a note**:
+
+   - Press "Start Recording" to begin recording.
+   - Once done, press "Stop Recording" to save the note.
+   - The note will be stored with a timestamp and file path.
+
+2. **Playback**:
+
+   - Press "Play" to listen to a recorded note.
+   - During playback, you can press "Pause", "Stop", or "Skip Forward/Backward" (5 seconds).
+   - The app displays a progress bar showing the current position and total duration of the note.
+
+3. **"NEW" Badge**:
+
+   - Any note created in the last 60 seconds will display a "NEW" badge next to its timestamp.
+
+4. **Delete**:
+
+   - Press "Delete" to remove a voice note from the list and from local storage.
+
+5. **Transcription**:
+
+   - Press "Transcribe" to convert the audio note to text.
+   - During transcription, a loading state is displayed to inform the user that the audio is being transcribed.
+   - Once the transcription is complete, the transcribed text will be shown below the audio controls, and the transcription will be saved in **AsyncStorage**.
+
+   Example UI:
+
+   ```tsx
+   <View style={styles.transcription}>
+     {transcription ? (
+       <Text style={styles.transcriptionText}>{transcription}</Text>
+     ) : isTranscribing ? (
+       <View style={{flexDirection: 'row', alignItems: 'center'}}>
+         <ActivityIndicator
+           size="small"
+           color="#000"
+           style={{marginRight: 8}}
+         />
+         <Text>Transcribing...</Text>
+       </View>
+     ) : (
+       <Button title="Transcribe" onPress={handleTranscription} />
+     )}
+   </View>
+   ```
+
+## Folder Structure
+
+```bash
+src/
+├── components/
+│   └── VoiceNoteItem.tsx        # Component for rendering each voice note
+└── App.tsx                      # Main app file
 ```
 
-## Step 2: Build and run your app
+## Future Enhancements
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+- **UI and Animation**
 
-### Android
+## LIMITS
 
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+https://www.assemblyai.com/docs/deployment/account-management#usage-limits

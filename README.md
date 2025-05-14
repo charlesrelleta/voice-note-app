@@ -1,4 +1,8 @@
-Here’s the updated version of your **README** to include the transcription feature with a loading state:
+Versions
+
+ - "react": "19.0.0",
+ - "react-native": "0.79.2",
+ - "node": ">=18"
 
 ---
 
